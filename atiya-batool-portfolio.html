@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atiya Batool — Computer Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pcb-dark:#0e2119;
+    --pcb-darker:#081711;
+    --paper:#f4f0e3;
+    --paper-dim:#ece5d2;
+    --ink:#152018;
+    --ink-soft:#3d4a41;
+    --copper:#c1793d;
+    --copper-light:#e2a663;
+    --trace:#3f7d6c;
+    --amber:#e8b84b;
+    --line:#d8cfb6;
+    --radius:2px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Public Sans', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'Space Mono', monospace;}
+  a{color:inherit;}
+  ::selection{background:var(--amber); color:var(--pcb-darker);}
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--copper);
+    outline-offset:3px;
+  }
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px;}
+
+  /* ---------- NAV ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(244,240,227,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .topnav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:14px; padding-bottom:14px;
+  }
+  .brandmark{
+    font-family:'Space Mono', monospace; font-weight:700; font-size:15px;
+    letter-spacing:0.04em;
+  }
+  .brandmark span{color:var(--copper);}
+  .navlinks{display:flex; gap:26px; list-style:none;}
+  .navlinks a{
+    font-family:'Space Mono', monospace; font-size:12px; letter-spacing:0.06em;
+    text-decoration:none; text-transform:uppercase; color:var(--ink-soft);
+    position:relative; padding-bottom:3px;
+  }
+  .navlinks a::after{
+    content:""; position:absolute; left:0; bottom:0; height:1px; width:0;
+    background:var(--copper); transition:width .25s ease;
+  }
+  .navlinks a:hover::after{width:100%;}
+  .navlinks a:hover{color:var(--ink);}
+  @media (max-width:680px){ .navlinks{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--pcb-dark);
+    color:var(--paper);
+    position:relative;
+    overflow:hidden;
+    border-bottom:6px solid var(--copper);
+  }
+  .hero-inner{
+    padding:96px 0 84px;
+    position:relative; z-index:2;
+  }
+  .eyebrow{
+    font-family:'Space Mono', monospace; font-size:12px; letter-spacing:0.18em;
+    color:var(--amber); text-transform:uppercase; margin-bottom:22px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:""; width:8px; height:8px; border-radius:50%;
+    background:var(--amber); box-shadow:0 0 8px var(--amber);
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
+  h1.name{
+    font-family:'Space Mono', monospace; font-weight:700;
+    font-size:clamp(38px, 7vw, 76px);
+    line-height:1.02; letter-spacing:-0.01em;
+    text-transform:uppercase;
+  }
+  h1.name .last{color:var(--copper-light);}
+  .role{
+    margin-top:18px; font-size:clamp(16px,2.4vw,20px);
+    max-width:560px; color:#d7d3c3; font-weight:400;
+  }
+  .role strong{color:var(--paper); font-weight:600;}
+  .hero-meta{
+    margin-top:38px; display:flex; gap:34px; flex-wrap:wrap;
+  }
+  .meta-item .k{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.1em; color:#9fb0a5; text-transform:uppercase;}
+  .meta-item .v{font-family:'Space Mono',monospace; font-size:22px; color:var(--amber); margin-top:4px;}
+
+  .waveform-layer{
+    position:absolute; inset:0; z-index:1; opacity:0.55;
+  }
+  .trace-lines{position:absolute; inset:0; z-index:0; opacity:.18;}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:80px 0;}
+  .sec-head{
+    display:flex; align-items:baseline; gap:14px; margin-bottom:40px;
+    border-bottom:1px solid var(--line); padding-bottom:16px;
+  }
+  .sec-tag{
+    font-family:'Space Mono',monospace; font-size:12px; color:var(--copper);
+    letter-spacing:.08em;
+  }
+  .sec-head h2{
+    font-family:'Space Mono',monospace; font-size:clamp(22px,3vw,30px);
+    text-transform:uppercase; letter-spacing:.01em;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{
+    display:grid; grid-template-columns:1.3fr 1fr; gap:56px; align-items:start;
+  }
+  @media (max-width:760px){ .about-grid{grid-template-columns:1fr;} }
+  .about-text p{font-size:17px; color:var(--ink-soft); max-width:52ch;}
+  .spec-sheet{
+    border:1px solid var(--line); background:var(--paper-dim);
+    border-radius:var(--radius);
+  }
+  .spec-row{
+    display:flex; justify-content:space-between; padding:14px 18px;
+    border-bottom:1px solid var(--line); font-size:14px;
+  }
+  .spec-row:last-child{border-bottom:none;}
+  .spec-row .label{font-family:'Space Mono',monospace; color:var(--ink-soft); font-size:12px; letter-spacing:.05em; text-transform:uppercase;}
+  .spec-row .value{font-family:'Space Mono',monospace; font-weight:700; color:var(--ink); text-align:right;}
+  .spec-title{
+    font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--copper); padding:12px 18px 0;
+  }
+
+  /* ---------- SKILLS ---------- */
+  .skills-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  @media (max-width:760px){ .skills-grid{grid-template-columns:1fr;} }
+  .skill-block{
+    border:1px solid var(--line); border-radius:var(--radius); padding:22px;
+    background:var(--paper-dim);
+  }
+  .skill-block h3{
+    font-family:'Space Mono',monospace; font-size:12px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--copper); margin-bottom:14px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .skill-block h3::before{content:""; width:14px; height:1px; background:var(--copper);}
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    font-family:'Space Mono',monospace; font-size:12.5px; padding:6px 11px;
+    border:1px solid var(--trace); color:var(--pcb-dark); border-radius:20px;
+    background:transparent;
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .proj-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px;}
+  @media (max-width:760px){ .proj-grid{grid-template-columns:1fr;} }
+  .proj-card{
+    border:1px solid var(--line); border-radius:var(--radius);
+    padding:24px; background:var(--paper-dim);
+    transition:border-color .2s ease, transform .2s ease;
+    position:relative;
+  }
+  .proj-card:hover{border-color:var(--copper); transform:translateY(-2px);}
+  .proj-id{
+    font-family:'Space Mono',monospace; font-size:11px; color:var(--copper);
+    letter-spacing:.08em; margin-bottom:10px; display:block;
+  }
+  .proj-card h3{font-size:18px; font-weight:700; margin-bottom:6px;}
+  .proj-tools{
+    font-family:'Space Mono',monospace; font-size:11.5px; color:var(--trace);
+    margin-bottom:12px; letter-spacing:.03em;
+  }
+  .proj-card p{font-size:14.5px; color:var(--ink-soft);}
+
+  /* ---------- EDUCATION / ACHIEVEMENT ---------- */
+  .edu-row{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:24px; padding:22px 0; border-bottom:1px solid var(--line); flex-wrap:wrap;
+  }
+  .edu-row:last-child{border-bottom:none;}
+  .edu-left h3{font-size:18px; font-weight:700;}
+  .edu-left .sub{color:var(--ink-soft); font-size:14.5px; margin-top:3px;}
+  .edu-right{font-family:'Space Mono',monospace; font-size:13px; color:var(--copper); text-align:right; white-space:nowrap;}
+  .grade-strip{display:flex; gap:14px; margin-top:26px; flex-wrap:wrap;}
+  .grade-pill{
+    border:1px solid var(--line); border-radius:20px; padding:8px 16px;
+    font-family:'Space Mono',monospace; font-size:12.5px; background:var(--paper-dim);
+  }
+  .grade-pill b{color:var(--copper);}
+  .achievement{
+    margin-top:28px; padding:18px 22px; border-left:3px solid var(--amber);
+    background:var(--paper-dim); font-size:14.5px;
+  }
+  .achievement b{font-family:'Space Mono',monospace;}
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer{
+    background:var(--pcb-dark); color:var(--paper);
+    padding:70px 0 34px;
+  }
+  .contact-grid{
+    display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:30px;
+  }
+  footer h2{
+    font-family:'Space Mono',monospace; font-size:clamp(24px,4vw,38px);
+    text-transform:uppercase;
+  }
+  footer p.sub{color:#a9b4ac; margin-top:10px; max-width:44ch;}
+  .contact-list{display:flex; flex-direction:column; gap:10px; align-items:flex-end;}
+  @media (max-width:680px){ .contact-list{align-items:flex-start;} .contact-grid{flex-direction:column;} }
+  .contact-list a{
+    font-family:'Space Mono',monospace; font-size:14px; text-decoration:none;
+    color:var(--amber); border-bottom:1px solid transparent;
+  }
+  .contact-list a:hover{border-bottom-color:var(--amber);}
+  .pin-note{
+    margin-top:50px; padding-top:20px; border-top:1px solid #2a4438;
+    font-family:'Space Mono',monospace; font-size:11px; color:#7f8f85;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="wrap">
+    <div class="brandmark">A<span>.</span>BATOOL</div>
+    <ul class="navlinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <svg class="trace-lines" viewBox="0 0 1080 520" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 60 H240 V120 H520 V60 H1080" stroke="#3f7d6c" stroke-width="1.5" fill="none"/>
+    <path d="M0 460 H180 V400 H460 V460 H900 V380 H1080" stroke="#3f7d6c" stroke-width="1.5" fill="none"/>
+    <circle cx="240" cy="60" r="4" fill="#c1793d"/>
+    <circle cx="520" cy="60" r="4" fill="#c1793d"/>
+    <circle cx="180" cy="460" r="4" fill="#c1793d"/>
+    <circle cx="900" cy="380" r="4" fill="#c1793d"/>
+  </svg>
+  <svg class="waveform-layer" viewBox="0 0 1080 520" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline id="ecgline" fill="none" stroke="#e8b84b" stroke-width="2.5"
+      points="0,300 60,300 90,300 105,250 120,340 135,180 150,300 165,300 260,300 290,300 305,260 320,330 335,200 350,300 365,300 460,300 490,300 505,255 520,335 535,190 550,300 565,300 660,300 690,300 705,260 720,330 735,200 750,300 765,300 860,300 890,300 905,255 920,335 935,190 950,300 965,300 1080,300"
+      stroke-dasharray="1800" stroke-dashoffset="1800">
+      <animate attributeName="stroke-dashoffset" from="1800" to="0" dur="3.4s" fill="freeze" />
+    </polyline>
+  </svg>
+  <div class="wrap hero-inner">
+    <div class="eyebrow">Available for internships &amp; junior roles</div>
+    <h1 class="name">ATIYA<br><span class="last">BATOOL</span></h1>
+    <p class="role">Computer Engineering undergraduate building at the intersection of <strong>embedded systems</strong>, <strong>digital design</strong> and <strong>signal processing</strong>.</p>
+    <div class="hero-meta">
+      <div class="meta-item"><div class="k">CGPA</div><div class="v">3.88</div></div>
+      <div class="meta-item"><div class="k">Graduation</div><div class="v">Jun 2028</div></div>
+      <div class="meta-item"><div class="k">Status</div><div class="v">Scholar</div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="about" class="wrap">
+    <div class="sec-head"><span class="sec-tag mono">01</span><h2>About</h2></div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a Computer Engineering student at Foundation University School of Science and Technology, currently holding a 3.88 CGPA and a university scholarship since my second semester.</p>
+        <p style="margin-top:16px;">My interests sit across software development, embedded systems, digital design and signal processing — I like projects that move between code and circuits, from assembling instructions at the hardware level to reading signals off the human body.</p>
+      </div>
+      <div class="spec-sheet">
+        <div class="spec-title">Datasheet</div>
+        <div class="spec-row"><span class="label">Institution</span><span class="value">FUSST</span></div>
+        <div class="spec-row"><span class="label">Program</span><span class="value">BS Comp. Eng.</span></div>
+        <div class="spec-row"><span class="label">CGPA</span><span class="value">3.88</span></div>
+        <div class="spec-row"><span class="label">Scholarship</span><span class="value">Since Sem. 2</span></div>
+        <div class="spec-row"><span class="label">Phone</span><span class="value">0331 8661916</span></div>
+        <div class="spec-row"><span class="label">Email</span><span class="value" style="font-size:12px;">attiyabatool731@gmail.com</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="wrap">
+    <div class="sec-head"><span class="sec-tag mono">02</span><h2>Skills</h2></div>
+    <div class="skills-grid">
+      <div class="skill-block">
+        <h3>Languages</h3>
+        <div class="chip-row">
+          <span class="chip">C++</span>
+          <span class="chip">MATLAB</span>
+          <span class="chip">8086 Assembly</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <h3>Concepts</h3>
+        <div class="chip-row">
+          <span class="chip">OOP</span>
+          <span class="chip">Digital Logic</span>
+          <span class="chip">Data Structures &amp; Algorithms</span>
+        </div>
+      </div>
+      <div class="skill-block">
+        <h3>Focus areas</h3>
+        <div class="chip-row">
+          <span class="chip">Signal Processing</span>
+          <span class="chip">Embedded Systems</span>
+          <span class="chip">Circuit Design</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="wrap">
+    <div class="sec-head"><span class="sec-tag mono">03</span><h2>Projects</h2></div>
+    <div class="proj-grid">
+
+      <div class="proj-card">
+        <span class="proj-id mono">U1 — SIGNALS &amp; SYSTEMS</span>
+        <h3>Real-Time ECG &amp; EEG Signal Processing System</h3>
+        <div class="proj-tools mono">MATLAB</div>
+        <p>Designed and analyzed ECG and EEG signal processing pipelines, with a comparative study across signal types.</p>
+      </div>
+
+      <div class="proj-card">
+        <span class="proj-id mono">U2 — HEALTHCARE / OOP</span>
+        <h3>Lung Health Risk Assessment System</h3>
+        <div class="proj-tools mono">C++</div>
+        <p>Object-oriented application that evaluates lung health risk factors.</p>
+      </div>
+
+      <div class="proj-card">
+        <span class="proj-id mono">U3 — COMPUTER ARCHITECTURE</span>
+        <h3>Mini Assembler</h3>
+        <div class="proj-tools mono">8086 Assembly Language</div>
+        <p>Built a mini assembler as part of a Computer Architecture &amp; Organization project.</p>
+      </div>
+
+      <div class="proj-card">
+        <span class="proj-id mono">U4 — SECURITY / SOFTWARE</span>
+        <h3>Online Voting System</h3>
+        <div class="proj-tools mono">C++</div>
+        <p>Designed a secure online voting system as a core programming project.</p>
+      </div>
+
+      <div class="proj-card">
+        <span class="proj-id mono">U5 — CIRCUIT ANALYSIS</span>
+        <h3>Fire Alarm</h3>
+        <div class="proj-tools mono">Circuit Design</div>
+        <p>Designed and tested a fire alarm circuit from the ground up.</p>
+      </div>
+
+      <div class="proj-card">
+        <span class="proj-id mono">U6 — DIGITAL LOGIC</span>
+        <h3>Metal Detector</h3>
+        <div class="proj-tools mono">Digital Logic Design</div>
+        <p>Built a working metal detector applying core digital logic concepts.</p>
+      </div>
+
+      <div class="proj-card" style="grid-column: span 2;">
+        <span class="proj-id mono">U7 — DATA STRUCTURES &amp; ALGORITHMS</span>
+        <h3>Spell Checker</h3>
+        <div class="proj-tools mono">C++</div>
+        <p>Developed a spell checker built on efficient data structures for fast lookups and suggestions.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="education" class="wrap">
+    <div class="sec-head"><span class="sec-tag mono">04</span><h2>Education</h2></div>
+    <div class="edu-row">
+      <div class="edu-left">
+        <h3>BS Computer Engineering</h3>
+        <div class="sub">Foundation University School of Science and Technology</div>
+      </div>
+      <div class="edu-right">CGPA 3.88<br>Exp. Graduation Jun 2028</div>
+    </div>
+    <div class="grade-strip">
+      <div class="grade-pill">FSc &nbsp;<b>79%</b></div>
+      <div class="grade-pill">Matric &nbsp;<b>81%</b></div>
+    </div>
+    <div class="achievement mono">★ <b>University Scholarship Recipient</b> — since 2nd Semester</div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div>
+        <h2>Let's build<br>something.</h2>
+        <p class="sub">Open to internships and junior roles in embedded systems, software, and signal processing.</p>
+      </div>
+      <div class="contact-list">
+        <a href="mailto:attiyabatool731@gmail.com">attiyabatool731@gmail.com</a>
+        <a href="tel:+923318661916">+92 331 8661916</a>
+        <span style="font-family:'Space Mono',monospace; font-size:13px; color:#a9b4ac;">References available on request</span>
+      </div>
+    </div>
+    <div class="pin-note">
+      <span>ATIYA_BATOOL // COMPUTER_ENGINEERING</span>
+      <span>REV 2026.06</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
